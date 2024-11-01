@@ -1,0 +1,5 @@
+{application, prometheus_hackney_collector, [
+    {description, "Collector of hackney pool metrics"},
+    {vsn, "0.1.0"},
+    {applications, [kernel, stdlib]}
+]}.
