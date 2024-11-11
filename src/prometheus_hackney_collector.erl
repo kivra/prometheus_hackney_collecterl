@@ -11,18 +11,13 @@ deregister_cleanup(_Registry) ->
     ok.
 
 collect_mf(_Registry, Callback) ->
-    case application:ensure_started(hackney) of
-        ok ->
-            PoolNames = [Name || {Name, _Pid} <- ets:tab2list(hackney_pool)],
-            PoolStats = group_pool_metrics([pool_stats(PoolName) || PoolName <- PoolNames]),
-            [
-                add_metrics(metric_name(Item), Counters, Callback)
-             || {Item, Counters} <- maps:to_list(PoolStats)
-            ],
-            ok;
-        {error, _} ->
-            ok
-    end.
+    PoolNames = [Name || {Name, _Pid} <- ets:tab2list(hackney_pool)],
+    PoolStats = group_pool_metrics([pool_stats(PoolName) || PoolName <- PoolNames]),
+    [
+        add_metrics(metric_name(Item), Counters, Callback)
+     || {Item, Counters} <- maps:to_list(PoolStats)
+    ],
+    ok.
 
 %%%% Internal
 
